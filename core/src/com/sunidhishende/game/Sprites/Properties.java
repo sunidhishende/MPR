@@ -25,6 +25,8 @@ public class Properties extends InteractiveTileObject{
 
     }
 
+
+
     @Override
     public void onHeadHit() {
         Gdx.app.log("Properties", "Collision");
@@ -35,3 +37,4 @@ public class Properties extends InteractiveTileObject{
     }
 
 }
+

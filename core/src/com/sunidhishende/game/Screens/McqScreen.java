@@ -2,6 +2,7 @@ package com.sunidhishende.game.Screens;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -30,11 +31,11 @@ public class McqScreen implements Screen {
     private Stage stage;
     private static int i=0;
     private Button next;
-    private Op o;
+    private static Op o;
     private Array<Question> questionArray;
 
-
     private Game game;
+    private int isMarked=0;
 
 
     public McqScreen(MprGame game)
@@ -56,6 +57,36 @@ public class McqScreen implements Screen {
         o= new Op(questionArray.get(i));
         addactors();
 
+            next.addListener(new ClickListener() {
+                public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                    if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
+                        return true;
+                    }
+                    return false;
+
+                }
+
+
+                public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                    if(isMarked==1) {
+                        o.getQuestion().remove();
+                        for (int i = 0; i < 4; i++) {
+                            o.getButtons().get(i).remove();
+                        }
+                        i++;
+                        o = new Op(questionArray.get(i));
+                        addactors();
+                        isMarked=0;
+                        Gdx.app.log("i", String.format("%d", i));
+                        Gdx.app.log("i", String.format("Touch up"));
+                    }
+
+
+                }
+            });
+
+
+
     }
 
     public void update(float dt){
@@ -64,23 +95,20 @@ public class McqScreen implements Screen {
 
                 if (o.getQ().getOptions().get(x) == o.getQ().getCorrectanswer()) {
                     o.getTbstyles().get(x).fontColor = Color.GREEN;
-                    o.getButtons().get(x).setDisabled(true);
+                    for(int i=0; i<4; i++)
+                    {o.getButtons().get(i).setDisabled(true);}
                 } else if (o.getQ().getOptions().get(x) != o.getQ().getCorrectanswer()) {
                     o.getTbstyles().get(x).fontColor = Color.RED;
-                    o.getButtons().get(x).setDisabled(true);
+                    if(!o.getButtons().get(x).isDisabled())
+                    {Hud.decreaseHealth(20);}
+                    for(int i=0; i<4; i++)
+                    {o.getButtons().get(i).setDisabled(true);}
+
                 }
+                isMarked=1;
             }
 
         }
-
-        next.addListener(new InputListener(){  public boolean touchdown (InputEvent event, float x, float y, int pointer, int button) {
-            Gdx.app.log("i",  String.format("%d",i));
-            return false;
-        }
-
-        });
-
-
     }
 
     public void addQuestions()
@@ -121,6 +149,10 @@ public class McqScreen implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         hud.stage.draw();
         stage.draw();
+        if(Hud.gethealth()<=0)
+        {
+            game.setScreen(new GameOverScreen(game));
+        }
 
     }
 

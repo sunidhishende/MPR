@@ -30,6 +30,7 @@ public class PlayScreen implements Screen{
     private Hud hud;
 
 
+
     //Tile map variables
     private TmxMapLoader maploader;
     private TiledMap map;

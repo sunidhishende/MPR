@@ -45,7 +45,7 @@ public class Character extends Sprite {
     }
 
     public void update(float dt){
-        if (b2body.getPosition().y<0/MprGame.PPM|| Hud.gethealth()==0)
+        if (b2body.getPosition().y<0/MprGame.PPM|| Hud.gethealth()<=0)
         {
             characterIsDead=true;
         }
