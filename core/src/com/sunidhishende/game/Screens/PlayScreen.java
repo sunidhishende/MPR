@@ -4,6 +4,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
@@ -22,6 +23,8 @@ import com.sunidhishende.game.Tools.WorldContactListener;
 public class PlayScreen implements Screen{
     static final float STEP_TIME = 1f/60f;
     public static int count=0;
+    private TextureAtlas atlas;
+
 
 
     private MprGame game;
@@ -46,6 +49,8 @@ public class PlayScreen implements Screen{
 
 
     public PlayScreen(MprGame game){
+
+        atlas= new TextureAtlas("mpr.pack");
         this.game=game;
 
         gamecam= new OrthographicCamera();
@@ -58,10 +63,16 @@ public class PlayScreen implements Screen{
         world= new World(new Vector2(0,-10), true);
         b2dr= new Box2DDebugRenderer();
         new B2WorldCreator(world, map);
-        character= new Character(world);
+        character= new Character(world, this);
         world.setContactListener(new WorldContactListener());
 
 
+
+    }
+
+    public TextureAtlas getAtlas()
+    {
+        return atlas;
 
     }
 
@@ -116,10 +127,14 @@ public class PlayScreen implements Screen{
         renderer.render();
 
         //renderer our Box2DDebugLines
-        b2dr.render(world, gamecam.combined);
+        //b2dr.render(world, gamecam.combined);
 
         //render what hud camera sees
         game.batch.setProjectionMatrix(hud.stage.getCamera().combined);
+        game.batch.setProjectionMatrix(gamecam.combined);
+        game.batch.begin();
+        character.draw(game.batch);
+        game.batch.end();
         hud.stage.draw();
 
         if (mcqbrick.ishit==1)
