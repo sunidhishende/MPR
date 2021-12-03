@@ -15,7 +15,7 @@ import com.sunidhishende.game.Sprites.Properties;
 import com.sunidhishende.game.Sprites.mcqbrick;
 
 public class B2WorldCreator {
-    public B2WorldCreator(World world, TiledMap map){
+    public B2WorldCreator(World world, TiledMap map, MprGame game){
         BodyDef bdef= new BodyDef();
         PolygonShape shape= new PolygonShape();
         FixtureDef fdef= new FixtureDef();
@@ -52,7 +52,7 @@ public class B2WorldCreator {
         //Properties layer
         for(MapObject object: map.getLayers().get(5).getObjects().getByType(RectangleMapObject.class)){
             Rectangle rect = ((RectangleMapObject) object).getRectangle();
-            new Properties(world, map, rect);
+            new Properties(world, map, rect, game);
         }
         //mcqbrick
         for(MapObject object: map.getLayers().get(7).getObjects().getByType(RectangleMapObject.class)){

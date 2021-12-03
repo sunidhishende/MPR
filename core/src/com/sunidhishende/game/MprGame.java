@@ -1,13 +1,15 @@
 package com.sunidhishende.game;
 
-import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Game;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.utils.ScreenUtils;
+import com.sunidhishende.game.Screens.McqScreen;
 import com.sunidhishende.game.Screens.PlayScreen;
+import com.sunidhishende.game.Screens.propertiesText;
 
 public class MprGame extends Game {
+	public PlayScreen play;
+	public propertiesText propertiesText;
+
 	public static final int V_WIDTH=400;
 	public static final int V_HEIGHT=208;
 	public SpriteBatch batch;
@@ -24,7 +26,10 @@ public class MprGame extends Game {
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
-		setScreen(new PlayScreen(this));
+		play= new PlayScreen(this);
+		propertiesText = new propertiesText(this);
+		setScreen(play);
+
 	}
 
 	@Override

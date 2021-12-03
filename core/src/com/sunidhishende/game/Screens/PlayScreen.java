@@ -9,6 +9,7 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.viewport.FitViewport;
@@ -16,6 +17,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.sunidhishende.game.MprGame;
 import com.sunidhishende.game.Scenes.Hud;
 import com.sunidhishende.game.Sprites.Character;
+import com.sunidhishende.game.Sprites.Properties;
 import com.sunidhishende.game.Sprites.mcqbrick;
 import com.sunidhishende.game.Tools.B2WorldCreator;
 import com.sunidhishende.game.Tools.WorldContactListener;
@@ -45,6 +47,7 @@ public class PlayScreen implements Screen{
 
     private Character character;
     private mcqbrick mcqbrick;
+    private Properties properties;
 
 
 
@@ -62,9 +65,10 @@ public class PlayScreen implements Screen{
         gamecam.position.set(gamePort.getWorldWidth()/2, gamePort.getWorldHeight()/2,0);
         world= new World(new Vector2(0,-10), true);
         b2dr= new Box2DDebugRenderer();
-        new B2WorldCreator(world, map);
+        new B2WorldCreator(world, map, game);
         character= new Character(world, this);
         world.setContactListener(new WorldContactListener());
+
 
 
 
@@ -77,16 +81,55 @@ public class PlayScreen implements Screen{
     }
 
     public void handleInput(float dt){
-        if(Gdx.input.isKeyJustPressed(Input.Keys.UP)&& character.b2body.getLinearVelocity().y==0)
-        {
-           character.jump();
+
+        //for mobile
+        for(int i=0;i<10;i++) {
+            if (Gdx.input.isTouched(i)) {
+                int x = Gdx.input.getX(i);
+                int y = Gdx.input.getY(i);
+                Vector3 touchpos = new Vector3(x, y, 0);
+                if (touchpos.x > 1800) {
+                    if (character.b2body.getLinearVelocity().x <= 2) {
+                        character.b2body.applyLinearImpulse(new Vector2(0.08f, 0), character.b2body.getWorldCenter(), true);
+                    }
+                }
+
+                if (touchpos.x < 300) {
+                    if (character.b2body.getLinearVelocity().x >= -2) {
+                        character.b2body.applyLinearImpulse(new Vector2(-0.08f, 0), character.b2body.getWorldCenter(), true);
+                    }
+                }
+
+                if (Gdx.input.justTouched()) {
+                    if (touchpos.x < 1750 && touchpos.x > 400) {
+                        if (character.b2body.getLinearVelocity().y == 0) {
+                            character.jump();
+                        }
+
+                    }
+                }
+            }
         }
-        if(Gdx.input.isKeyPressed(Input.Keys.RIGHT) && character.b2body.getLinearVelocity().x<= 2){
+
+
+
+
+        //for keyboard
+        if(Gdx.input.isKeyJustPressed(Input.Keys.UP)&& character.b2body.getLinearVelocity().y==0 )
+        {
+            character.jump();
+        }
+
+        if(Gdx.input.isKeyPressed(Input.Keys.RIGHT) && character.b2body.getLinearVelocity().x<= 2 ){
             character.b2body.applyLinearImpulse(new Vector2(0.08f, 0), character.b2body.getWorldCenter(), true);
         }
+
+
         if(Gdx.input.isKeyPressed(Input.Keys.LEFT) && character.b2body.getLinearVelocity().x>= -2){
             character.b2body.applyLinearImpulse(new Vector2(-0.08f, 0), character.b2body.getWorldCenter(), true);
         }
+
+
 
     }
 
@@ -135,7 +178,6 @@ public class PlayScreen implements Screen{
         game.batch.begin();
         character.draw(game.batch);
         game.batch.end();
-        hud.stage.draw();
 
         if (mcqbrick.ishit==1)
         {
@@ -147,6 +189,19 @@ public class PlayScreen implements Screen{
             game.setScreen(new GameOverScreen(game));
             dispose();
         }
+
+
+        if (propertiesText.isclosed==1)
+        {
+            Gdx.app.log("game","resume");
+
+
+        }
+        hud.stage.draw();
+
+
+
+
 
 
 
@@ -163,6 +218,7 @@ public class PlayScreen implements Screen{
     @Override
     public void resize(int width, int height) {
         gamePort.update(width,height);
+
 
     }
 

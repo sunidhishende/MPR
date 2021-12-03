@@ -19,9 +19,9 @@ public class Bricks extends InteractiveTileObject{
     @Override
     public void onHeadHit() {
         Gdx.app.log("Bricks", "Collision");
-        setCategoryFilter(MprGame.DESTROYED_BIT);
-        getCell().setTile(null);
-        Hud.addScore(100);
+//        setCategoryFilter(MprGame.DESTROYED_BIT);
+//        getCell().setTile(null);
+        //  Hud.addScore(100);
 
     }
 }

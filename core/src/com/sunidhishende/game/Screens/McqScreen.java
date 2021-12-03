@@ -25,20 +25,23 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.sunidhishende.game.MprGame;
 import com.sunidhishende.game.Scenes.Hud;
 
+import javax.print.attribute.standard.MediaPrintableArea;
+
 public class McqScreen implements Screen {
     private Hud hud;
     private Viewport viewport;
     private Stage stage;
     private static int i=0;
     private Button next;
+    private Button close;
     private static Op o;
     private Array<Question> questionArray;
 
-    private Game game;
+    private final MprGame game;
     private int isMarked=0;
 
 
-    public McqScreen(MprGame game)
+    public McqScreen(final MprGame game)
     {
         this.game=game;
         hud= new Hud(game.batch);
@@ -57,9 +60,9 @@ public class McqScreen implements Screen {
         o= new Op(questionArray.get(i));
         addactors();
 
-            next.addListener(new ClickListener() {
+            next.addListener(new InputListener() {
                 public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                    if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
+                    if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)|| Gdx.input.isTouched()) {
                         return true;
                     }
                     return false;

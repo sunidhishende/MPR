@@ -4,9 +4,13 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.Window;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -53,9 +57,8 @@ public class Hud implements Disposable {
         stage.addActor(table);
         healthLabel.setPosition(75, 10);
         healthname.setPosition(25, 10);
-
-
     }
+
 
     public static void decreaseHealth(int value)
     {
@@ -74,8 +77,14 @@ public class Hud implements Disposable {
         scoreLabel.setText(String.format("%06d", score));
     }
 
+    public static Integer getScore() {
+        return score;
+    }
+
     @Override
     public void dispose() {
         stage.dispose();
     }
+
 }
+
