@@ -63,7 +63,8 @@ public class PlayScreen implements Screen{
         map= maploader.load("level1h.tmx");
         renderer= new OrthogonalTiledMapRenderer(map,1/MprGame.PPM);
         gamecam.position.set(gamePort.getWorldWidth()/2, gamePort.getWorldHeight()/2,0);
-        world= new World(new Vector2(0,-10), true);
+        world= new World(new Vector2(0
+                ,-13f), true);
         b2dr= new Box2DDebugRenderer();
         new B2WorldCreator(world, map, game);
         character= new Character(world, this);
@@ -89,13 +90,23 @@ public class PlayScreen implements Screen{
                 int y = Gdx.input.getY(i);
                 Vector3 touchpos = new Vector3(x, y, 0);
                 if (touchpos.x > 1800) {
-                    if (character.b2body.getLinearVelocity().x <= 2) {
+                    if((character.b2body.getLinearVelocity().x<= 2 ) && (character.b2body.getLinearVelocity().y==0))
+                    {
+                        character.b2body.applyLinearImpulse(new Vector2(0.50f, 0), character.b2body.getWorldCenter(), true);
+                    }
+                    if((character.b2body.getLinearVelocity().x<= 2 ) && (character.b2body.getLinearVelocity().y!=0))
+                    {
                         character.b2body.applyLinearImpulse(new Vector2(0.08f, 0), character.b2body.getWorldCenter(), true);
                     }
                 }
 
                 if (touchpos.x < 300) {
-                    if (character.b2body.getLinearVelocity().x >= -2) {
+                    if(( character.b2body.getLinearVelocity().x>= -2) && (character.b2body.getLinearVelocity().y==0) )
+                    {
+                        character.b2body.applyLinearImpulse(new Vector2(-0.50f, 0), character.b2body.getWorldCenter(), true);
+                    }
+                    if(( character.b2body.getLinearVelocity().x>= -2) && (character.b2body.getLinearVelocity().y!=0) )
+                    {
                         character.b2body.applyLinearImpulse(new Vector2(-0.08f, 0), character.b2body.getWorldCenter(), true);
                     }
                 }
@@ -120,13 +131,29 @@ public class PlayScreen implements Screen{
             character.jump();
         }
 
-        if(Gdx.input.isKeyPressed(Input.Keys.RIGHT) && character.b2body.getLinearVelocity().x<= 2 ){
-            character.b2body.applyLinearImpulse(new Vector2(0.08f, 0), character.b2body.getWorldCenter(), true);
+        if(Gdx.input.isKeyPressed(Input.Keys.RIGHT))
+            {
+                if((character.b2body.getLinearVelocity().x<= 2 ) && (character.b2body.getLinearVelocity().y==0))
+                {
+                  character.b2body.applyLinearImpulse(new Vector2(0.50f, 0), character.b2body.getWorldCenter(), true);
+                }
+                if((character.b2body.getLinearVelocity().x<= 2 ) && (character.b2body.getLinearVelocity().y!=0))
+                {
+                    character.b2body.applyLinearImpulse(new Vector2(0.08f, 0), character.b2body.getWorldCenter(), true);
+                }
+
         }
 
 
-        if(Gdx.input.isKeyPressed(Input.Keys.LEFT) && character.b2body.getLinearVelocity().x>= -2){
-            character.b2body.applyLinearImpulse(new Vector2(-0.08f, 0), character.b2body.getWorldCenter(), true);
+        if(Gdx.input.isKeyPressed(Input.Keys.LEFT)){
+            if(( character.b2body.getLinearVelocity().x>= -2) && (character.b2body.getLinearVelocity().y==0) )
+            {
+                character.b2body.applyLinearImpulse(new Vector2(-0.50f, 0), character.b2body.getWorldCenter(), true);
+            }
+            if(( character.b2body.getLinearVelocity().x>= -2) && (character.b2body.getLinearVelocity().y!=0) )
+            {
+                character.b2body.applyLinearImpulse(new Vector2(-0.08f, 0), character.b2body.getWorldCenter(), true);
+            }
         }
 
 
@@ -181,7 +208,7 @@ public class PlayScreen implements Screen{
 
         if (mcqbrick.ishit==1)
         {
-            game.setScreen(new McqScreen(game));
+            game.setScreen(new McqScreen(game, hud));
         }
 
         if(gameOver())

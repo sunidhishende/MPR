@@ -41,7 +41,7 @@ public class Character extends Sprite {
         fdef.filter.categoryBits=MprGame.CHARACTER_BIT;
         fdef.filter.maskBits= MprGame.DEFAULT|MprGame.PROPERTIES_BIT|MprGame.BRICK_BIT;
         fdef.shape= shape;
-        fdef.friction= 60/MprGame.PPM;
+        fdef.friction= 300/MprGame.PPM;
         b2body.createFixture(fdef);
 
         EdgeShape head= new EdgeShape();
@@ -62,7 +62,7 @@ public class Character extends Sprite {
     }
 
     public void jump(){
-        b2body.applyLinearImpulse(new Vector2(0, 4f), b2body.getWorldCenter(), true);
+        b2body.applyLinearImpulse(new Vector2(0, 4.6f), b2body.getWorldCenter(), true);
     }
 
     public boolean isDead()

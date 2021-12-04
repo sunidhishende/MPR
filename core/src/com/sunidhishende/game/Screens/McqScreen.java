@@ -41,10 +41,10 @@ public class McqScreen implements Screen {
     private int isMarked=0;
 
 
-    public McqScreen(final MprGame game)
+    public McqScreen(final MprGame game, Hud hud)
     {
         this.game=game;
-        hud= new Hud(game.batch);
+        this.hud= hud;
         viewport= new FitViewport(MprGame.V_WIDTH, MprGame.V_HEIGHT, new OrthographicCamera());
         stage=new Stage(viewport, ((MprGame)game).batch);
         Gdx.input.setInputProcessor(stage);
